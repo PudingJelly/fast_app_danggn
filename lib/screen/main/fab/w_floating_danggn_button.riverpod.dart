@@ -1,39 +1,45 @@
+import 'package:fast_app_base/screen/main/fab/w_floating_danggn_button.state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class FloatingButtonState {
-  bool isExpanded;
-  bool isSmall;
-
-  // FloatingButtonState()
-  //     : isExpanded = false,
-  //       isSmall = false;
-
-  FloatingButtonState(this.isExpanded, this.isSmall);
-}
 
 final floatingButtonStateProvider =
     StateNotifierProvider<FloatingButtonStateNotifier, FloatingButtonState>(
   (ref) => FloatingButtonStateNotifier(
-    FloatingButtonState(false, false),
+    const FloatingButtonState(false, false),
   ),
 );
 
 class FloatingButtonStateNotifier extends StateNotifier<FloatingButtonState> {
   FloatingButtonStateNotifier(super.state);
 
-  @override
-  bool updateShouldNotify(FloatingButtonState old, FloatingButtonState current) {
-    return true;
-  }
+  bool needToMakeButtonBigger = false;
 
   void onTapButton() {
-    state = FloatingButtonState(!state.isExpanded, true);
-      // ..isExpanded = !state.isExpanded
-      // ..isSmall = true;
+    final isExpanded = state.isExpanded;
+    final isSmall = state.isSmall;
+
+    // state = FloatingButtonState(!state.isExpanded, true);
+    state = state.copyWith(
+        isExpanded: !state.isExpanded,
+        isSmall: needToMakeButtonBigger ? false : true);
+    // ..isExpanded = !state.isExpanded
+    // ..isSmall = true;
+    if(needToMakeButtonBigger) {
+      needToMakeButtonBigger = false;
+    }
+
+    if (!isSmall && !isExpanded) {
+      needToMakeButtonBigger = true;
+    }
   }
 
   void changeButtonSize(bool isSmall) {
     // state = state..isSmall = isSmall;
-    state = FloatingButtonState(state.isExpanded, isSmall);
+    state = state.copyWith(isSmall: isSmall);
+  }
+
+  @override
+  bool updateShouldNotify(
+      FloatingButtonState old, FloatingButtonState current) {
+    return true;
   }
 }
