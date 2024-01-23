@@ -57,7 +57,8 @@ class FloatingDanggnButton extends ConsumerWidget {
               ),
               Tap(
                 onTap: () {
-                  ref.read(floatingButtonStateProvider.notifier).onTapButton();
+                  final currentTab = ref.read(currentTabProvider);
+                  ref.read(floatingButtonStateProvider.notifier).toggleMenu();
                 },
                 child: AnimatedContainer(
                   duration: duration,
@@ -84,12 +85,12 @@ class FloatingDanggnButton extends ConsumerWidget {
                       ),
                     ],
                   ),
-                ).pOnly(
-                  bottom: MainScreenState.bottomNavigationBarHeight +
-                      context.viewPaddingBottom +
-                      10,
-                  right: 20,
                 ),
+              ).pOnly(
+                bottom: MainScreenState.bottomNavigationBarHeight +
+                    context.viewPaddingBottom +
+                    10,
+                right: 20,
               ),
             ],
           ),
