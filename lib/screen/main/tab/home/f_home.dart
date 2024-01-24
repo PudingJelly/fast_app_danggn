@@ -1,4 +1,6 @@
+import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/entity/dummies.dart';
+import 'package:fast_app_base/screen/main/fab/w_floating_danggn_button.dart';
 import 'package:fast_app_base/screen/main/fab/w_floating_danggn_button.riverpod.dart';
 import 'package:fast_app_base/screen/main/tab/home/w_product_post_item.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class HomeFragment extends ConsumerStatefulWidget {
 
 class _HomeFragmentState extends ConsumerState<HomeFragment> {
   final scrollController = ScrollController();
+  String title = '산본동';
 
   @override
   void initState() {
@@ -31,11 +34,35 @@ class _HomeFragmentState extends ConsumerState<HomeFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      controller: scrollController,
-      children: postList.map(
-        (e) => ProductPostItem(e),
-      ).toList(),
+    return Column(
+      children: [
+        AppBar(
+          title: PopupMenuButton<String>(
+            onSelected: (value) {
+              setState(() {
+                title = value;
+              });
+            },
+            itemBuilder: (BuildContext context) => ['다트동', '앱동']
+                .map((e) => PopupMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ))
+                .toList(),
+            child: Text(title),
+          ),
+        ),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.only(bottom: FloatingDanggnButton.height),
+            controller: scrollController,
+            itemBuilder: (context, index) => ProductPostItem(postList[index]),
+            itemCount: postList.length,
+            separatorBuilder: (context, index) =>
+                const Line().pSymmetric(h: 15),
+          ),
+        ),
+      ],
     );
   }
 }
