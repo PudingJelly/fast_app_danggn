@@ -10,7 +10,12 @@ import 'w_menu_drawer.dart';
 final currentTabProvider = StateProvider((ref) => TabItem.home);
 
 class MainScreen extends ConsumerStatefulWidget {
-  const MainScreen({super.key});
+  final TabItem fistTab;
+
+  const MainScreen({
+    super.key,
+    this.fistTab = TabItem.home,
+  });
 
   @override
   ConsumerState<MainScreen> createState() => MainScreenState();
@@ -23,6 +28,7 @@ class MainScreenState extends ConsumerState<MainScreen>
       TabItem.values.map((e) => GlobalKey<NavigatorState>()).toList();
 
   TabItem get _currentTab => ref.watch(currentTabProvider);
+
   int get _currentIndex => tabs.indexOf(_currentTab);
 
   GlobalKey<NavigatorState> get _currentTabNavigationKey =>
@@ -39,6 +45,16 @@ class MainScreenState extends ConsumerState<MainScreen>
   }
 
   @override
+  void didUpdateWidget(covariant MainScreen oldWidget) {
+    if(oldWidget.fistTab != widget.fistTab) {
+      delay((){
+        ref.read(currentTabProvider.notifier).state = widget.fistTab;
+      }, 0.ms);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _handleBackPressed,
@@ -50,9 +66,8 @@ class MainScreenState extends ConsumerState<MainScreen>
               drawer: const MenuDrawer(),
               body: Container(
                 padding: EdgeInsets.only(
-                    bottom: extendBody
-                        ? 60 - bottomNavigationBarBorderRadius
-                        : 0),
+                    bottom:
+                        extendBody ? 60 - bottomNavigationBarBorderRadius : 0),
                 child: SafeArea(
                   bottom: !extendBody,
                   child: pages,

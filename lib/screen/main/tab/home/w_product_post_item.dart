@@ -14,9 +14,10 @@ class ProductPostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tap(
       onTap: () {
+        context.go('/main/localLife/${post.id}');
         // 상세페이지
-        Nav.push(PostDetailScreen(post.id, simpleProductPost: post),
-            durationMs: 800, navAni: NavAni.Right);
+        // Nav.push(PostDetailScreen(post.id, simpleProductPost: post),
+        //     durationMs: 800, navAni: NavAni.Right);
       },
       child: Stack(
         children: [
