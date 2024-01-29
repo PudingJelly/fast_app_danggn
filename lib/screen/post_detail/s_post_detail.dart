@@ -11,6 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../common/widget/w_round_button.dart';
 import '../../entity/post/vo_product_post.dart';
 
 class PostDetailScreen extends ConsumerWidget {
@@ -29,7 +30,7 @@ class PostDetailScreen extends ConsumerWidget {
 
     return productPost.when(
       data: (data) => _PostDetail(
-        data.simpleProductPost,
+        simpleProductPost ?? data.simpleProductPost,
         productPost: data,
       ),
       error: (error, trace) => '에러발생'.text.make(),
@@ -45,7 +46,11 @@ class _PostDetail extends HookWidget {
   final ProductPost? productPost;
   static const bottomMenuHeight = 100.0;
 
-  const _PostDetail(this.simpleProductPost, {this.productPost, super.key});
+  const _PostDetail(
+    this.simpleProductPost, {
+    Key? key,
+    this.productPost,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,34 +99,42 @@ class PostDetailBottomMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: _PostDetail.bottomMenuHeight,
       child: Column(
         children: [
-          Line(),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Image.asset(
-                  '$basePath/detail/heart_on.png',
-                  height: 25,
-                ),
-                const Width(30),
-                const VerticalLine().pSymmetric(v: 15),
-
-                Column(
+          const Line(),
+          Row(
+            children: [
+              Image.asset(
+                '$basePath/detail/heart_on.png',
+                height: 25,
+              ),
+              const Width(30),
+              const VerticalLine().pSymmetric(v: 15),
+              const Width(30),
+              Expanded(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        product.price.toWon().text.bold.make()
+                        product.price.toWon().text.bold.make(),
                       ],
                     ),
                     '가격 제안하기'.text.orange400.underline.make(),
                   ],
                 ),
-              ],
-            ),
+              ),
+              RoundButton(
+                text: '채팅하기',
+                onTap: () {},
+                bgColor: Colors.orange,
+                borderRadius: 7,
+              ),
+              width10,
+            ],
           ),
         ],
       ),
@@ -131,10 +144,10 @@ class PostDetailBottomMenu extends StatelessWidget {
 
 class _ImagePager extends StatelessWidget {
   const _ImagePager({
-    super.key,
+    Key? key,
     required this.pageController,
     required this.simpleProductPost,
-  });
+  }) : super(key: key);
 
   final PageController pageController;
   final SimpleProductPost simpleProductPost;
@@ -148,25 +161,30 @@ class _ImagePager extends StatelessWidget {
           PageView(
             controller: pageController,
             children: simpleProductPost.product.images
-                .map((url) => CachedNetworkImage(
-                      imageUrl: url,
-                      fit: BoxFit.fill,
+                .map((url) => Hero(
+                      tag:
+                          '${simpleProductPost.id}_$url',
+                      child: CachedNetworkImage(
+                        imageUrl: url,
+                        fit: BoxFit.fill,
+                      ),
                     ))
                 .toList(),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SmoothPageIndicator(
-              controller: pageController,
-              count: simpleProductPost.product.images.length,
-              effect: const JumpingDotEffect(
-                verticalOffset: 10,
-                dotColor: Colors.white54,
-                activeDotColor: Colors.black45,
+          if (simpleProductPost.product.images.length > 1)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SmoothPageIndicator(
+                controller: pageController,
+                count: simpleProductPost.product.images.length,
+                effect: const JumpingDotEffect(
+                  verticalOffset: 10,
+                  dotColor: Colors.white54,
+                  activeDotColor: Colors.black45,
+                ),
+                onDotClicked: (index) {},
               ),
-              onDotClicked: (index) {},
             ),
-          ),
         ],
       ),
     );
@@ -175,8 +193,8 @@ class _ImagePager extends StatelessWidget {
 
 class _Appbar extends StatelessWidget {
   const _Appbar({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
