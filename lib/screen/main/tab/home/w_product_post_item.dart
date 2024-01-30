@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fast_app_base/common/common.dart';
+import 'package:fast_app_base/common/dart/extension/datetime_extension.dart';
 import 'package:fast_app_base/entity/post/vo_simple_product_post.dart';
 import 'package:fast_app_base/screen/post_detail/s_post_detail.dart';
 import 'package:flutter/material.dart';
@@ -49,15 +50,13 @@ class ProductPostItem extends StatelessWidget {
                             .color(context.appColors.lessImportant)
                             .make(),
                         '•'.text.color(context.appColors.lessImportant).make(),
-                        timeago
-                            .format(post.createdTime,
-                                locale: context.locale.languageCode)
+                        post.createdTime.timeago
                             .text
                             .color(context.appColors.lessImportant)
                             .make(),
                       ],
                     ),
-                    post.product.price.toWon().text.bold.make(),
+                    IntExt(post.product.price).toWon().text.bold.make(),
                   ],
                 ),
               ),
