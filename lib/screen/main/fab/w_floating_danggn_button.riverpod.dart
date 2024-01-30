@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final floatingButtonStateProvider =
     StateNotifierProvider<FloatingButtonStateNotifier, FloatingButtonState>(
   (ref) => FloatingButtonStateNotifier(
-    const FloatingButtonState(false, false),
+    const FloatingButtonState(false, false, false),
   ),
 );
 
@@ -41,5 +41,13 @@ class FloatingButtonStateNotifier extends StateNotifier<FloatingButtonState> {
   bool updateShouldNotify(
       FloatingButtonState old, FloatingButtonState current) {
     return true;
+  }
+
+  void hideButton() {
+    state = state.copyWith(ishided: true);
+  }
+
+  void showButton() {
+    state = state.copyWith(ishided: false);
   }
 }

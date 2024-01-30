@@ -6,6 +6,7 @@ part 'w_floating_danggn_button.state.freezed.dart';
 class FloatingButtonState with _$FloatingButtonState {
   const factory FloatingButtonState(
       final bool isExpanded,
+      final bool ishided,
       final bool isSmall,
       ) = _FloatingButtonState;
 

@@ -61,11 +61,11 @@ class _WriteScreenState extends ConsumerState<WriteScreen>
     // print('isKeyboardOn: $isKeyboardOn');
     return Scaffold(
       appBar: AppBar(
-        title: '내 물건 팔기'.text.bold.make(),
+        title: 'sell_my_thing'.tr().text.bold.make(),
         actions: [
           Tap(
             onTap: () {},
-            child: '임시저장'.text.make().p(15),
+            child: 'temp_save'.tr().text.make().p(15),
           ),
         ],
       ),
