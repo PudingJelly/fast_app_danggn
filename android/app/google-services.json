@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628184017518",
+    "project_id": "fast-danggn-app",
+    "storage_bucket": "fast-danggn-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628184017518:android:d1689026cad7f86099547f",
+        "android_client_info": {
+          "package_name": "com.example.fast_app_base"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwy7UulNG3-rLVGLOOT1xAEzK18o2XiDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

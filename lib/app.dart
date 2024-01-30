@@ -5,11 +5,13 @@ import 'package:fast_app_base/entity/post/vo_simple_product_post.dart';
 import 'package:fast_app_base/screen/main/s_main.dart';
 import 'package:fast_app_base/screen/main/tab/tab_item.dart';
 import 'package:fast_app_base/screen/post_detail/s_post_detail.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'auth.dart';
+import 'common/fcm/fcm_manager.dart';
 import 'common/route/transition/fade_transition_page.dart';
 import 'common/theme/custom_theme.dart';
 
@@ -34,6 +36,8 @@ class AppState extends State<App> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    FcmManager.requestPermission();
+    FcmManager.initialize();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -133,6 +137,7 @@ class AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print ('LifeCycle: ${describeEnum(state)}');
     switch (state) {
       case AppLifecycleState.resumed:
         App.isForeground = true;
